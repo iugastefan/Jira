@@ -16,7 +16,6 @@
         </e>
       </e>
       <e p="Controllers" t="Include">
-        <e p="AdminController.cs" t="Include" />
         <e p="HomeController.cs" t="Include" />
         <e p="ProjectsController.cs" t="Include" />
       </e>
@@ -44,12 +43,8 @@
       </e>
       <e p="Startup.cs" t="Include" />
       <e p="Views" t="Include">
-        <e p="Admin" t="Include">
-          <e p="Index.cshtml" t="Include" />
-        </e>
         <e p="Home" t="Include">
           <e p="Index.cshtml" t="Include" />
-          <e p="Privacy.cshtml" t="Include" />
         </e>
         <e p="Projects" t="Include">
           <e p="AddMember.cshtml" t="Include" />
@@ -70,16 +65,6 @@
       <e p="appsettings.Development.json" t="Include" />
       <e p="appsettings.json" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
-      <e p="mono_crash.mem.15690.1.blob" t="Include" />
-      <e p="mono_crash.mem.21761.1.blob" t="Include" />
-      <e p="mono_crash.mem.26539.1.blob" t="Include" />
-      <e p="mono_crash.mem.29631.1.blob" t="Include" />
-      <e p="mono_crash.mem.49366.1.blob" t="Include" />
-      <e p="mono_crash.mem.49986.1.blob" t="Include" />
-      <e p="mono_crash.mem.50674.1.blob" t="Include" />
-      <e p="mono_crash.mem.53951.1.blob" t="Include" />
-      <e p="mono_crash.mem.54390.1.blob" t="Include" />
-      <e p="mono_crash.mem.55215.1.blob" t="Include" />
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
           <e p="netcoreapp3.1" t="Include">

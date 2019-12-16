@@ -99,7 +99,7 @@ namespace Jira.Controllers
             var project = _db.Projects.First(p => p.Id == id);
             var member = _db.Members.Any(m => m.Project.Id == id && m.Mail.Equals(User.Identity.Name));
 
-            if (!User.IsInRole("Admin") && !member)
+            if (!User.IsInRole("Admin") && !member && !project.Manager.Equals(User.Identity.Name))
                 return RedirectToAction("Index");
             ViewBag.Project = project;
             ViewBag.Members = _db.Members.Where(m => m.Project.Id == id);
@@ -113,6 +113,7 @@ namespace Jira.Controllers
             var members = from users in _db.Users select users.Email;
             ViewBag.Members = members;
             ViewBag.Id = id;
+            ViewBag.ProjectName = _db.Projects.First(p => p.Id == id).Title;
             return View();
         }
 

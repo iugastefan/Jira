@@ -3,11 +3,12 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <a href="/Projects">All Projects</a>
-    <form method="post" asp-controller="Projects" asp-action="New" >
-        <label> Title </label><br/>
-        <input type="text" name="Title"/>
-        <button type="submit">Submit</button>
+    <h1 class="display-4">Add a new project</h1>
+    <form method="post" asp-controller="Projects" asp-action="New">
+        <div class="form-group">
+            <label for="Title"> Title </label><br/>
+            <input class="form-control" type="text" name="Title" id="Title"/>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
     </form>
 </div>

@@ -2,23 +2,65 @@
     ViewData["Title"] = "Projects";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Projects Where You are Manager</p>
-    @foreach (var project in ViewBag.ProjectsYouAreManager)
+<div class="container">
+    <div class="row">
+        <h1 class="display-4">Projects</h1>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>Projects Where You are Manager</h3>
+            <ul class="list-group">
+                @foreach (var project in ViewBag.ProjectsYouAreManager)
+                {
+                    <li class="list-group-item">
+                        <a class="stretched-link" asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">
+                            <p>Title: @project.Title</p>
+                            <p>Manager: @project.Manager</p>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col">
+            <h3>Projects Where You are Member</h3>
+            <ul class="list-group">
+                @foreach (var project in ViewBag.ProjectsYouAreMember)
+                {
+                    <li class="list-group-item">
+                        <a class="stretched-link" asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">
+                            <p>Title: @project.Title</p>
+                            <p>Manager: @project.Manager</p>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-primary" asp-controller="Projects" asp-action="New">New project</a>
+        </div>
+    </div>
+    <br/>
+    @if (User.IsInRole("Admin"))
     {
-        <p>Title: @project.Title</p>
-        <p>Manager: @project.Manager</p>
-        <a asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">See</a>
-        <br/>
+        <div class="row">
+            <div class="col">
+                <h3>All Projects</h3>
+                <ul class="list-group">
+                    @foreach (var project in ViewBag.AllProjects)
+                    {
+                        <li class="list-group-item">
+                            <a class="stretched-link" asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">
+                                <p>Title: @project.Title</p>
+                                <p>Manager: @project.Manager</p>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="col"></div>
+        </div>
     }
-    <p>Projects Where You are Member</p>
-    @foreach (var project in ViewBag.ProjectsYouAreMember)
-    {
-        <p>Title: @project.Title</p>
-        <p>Manager: @project.Manager</p>
-        <a asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">See</a>
-        <br/>
-    }
-    <a href="/Projects/New">New project</a>
 </div>

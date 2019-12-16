@@ -2,35 +2,54 @@
     ViewData["Title"] = ViewBag.Project.Title;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <a asp-controller="Projects" asp-action="Index">All Projects</a>
-    <p>@ViewBag.Project.Title</p>
-    <a asp-controller="Projects" asp-action="AddMember" asp-route-id="@ViewBag.Project.Id">Add member</a>
-    @if (ViewBag.Project.Manager.Equals(User.Identity.Name) || User.IsInRole("Admin"))
-    {
-        <a asp-controller="Projects" asp-action="Delete" asp-route-id="@ViewBag.Project.Id">Delete project</a>
-    }
-    <p>Members:</p>
-    <ul>
-        @foreach (var member in ViewBag.Members)
-        {
-            <li>
-                <p>@member.Mail</p>
-                @if (ViewBag.Project.Manager.Equals(User.Identity.Name) || User.IsInRole("Admin"))
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="display-4">Project: @ViewBag.Project.Title</h1>
+        </div>
+        <div class="col m-auto">
+            @if (ViewBag.Project.Manager.Equals(User.Identity.Name) || User.IsInRole("Admin"))
+            {
+                <a class="btn btn-danger" asp-controller="Projects" asp-action="Delete" asp-route-id="@ViewBag.Project.Id">Delete project</a>
+            }
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col">
+            <h3>Members:</h3>
+        </div>
+        <div class="col">
+            <ul class="list-group">
+                @foreach (var member in ViewBag.Members)
                 {
-                    <a asp-controller="Projects" asp-action="RemoveMember" asp-route-id="@ViewBag.Project.Id" asp-route-mail="@member.Mail">
-                        Remove member
-                    </a>
+                    <li class="list-group-item container">
+                        <p>@member.Mail</p>
+                        @if (ViewBag.Project.Manager.Equals(User.Identity.Name) || User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-outline-danger" asp-controller="Projects" asp-action="RemoveMember" asp-route-id="@ViewBag.Project.Id" asp-route-mail="@member.Mail">
+                                Remove member
+                            </a>
+                        }
+                    </li>
                 }
-            </li>
-        }
-    </ul>
-    <p>Tasks:</p>
-    <ul>
+            </ul>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+        <a class="btn btn-primary" asp-controller="Projects" asp-action="AddMember" asp-route-id="@ViewBag.Project.Id">Add member</a>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <h3>Tasks:</h3>
+    <ul class="list-group">
         @foreach (var task in ViewBag.Tasks)
         {
-            <li>
+            <li class="list-group-item container">
                 <p>@task.Title</p>
                 <p>@task.Status</p>
             </li>
