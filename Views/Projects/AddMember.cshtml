@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <a href="/Projects">All Projects</a>
+    <form asp-controller="Projects" asp-action="AddMember" method="post" asp-route-id="@ViewBag.Id">
+        <select  class="form-control" name="mail">
+            @foreach (var member in @ViewBag.Members)
+            {
+                <option value="@member">@member</option>
+            }
+        </select>
+        <input type="submit" value="Create" class="btn btn-success"/>
+
+    </form>
+</div>

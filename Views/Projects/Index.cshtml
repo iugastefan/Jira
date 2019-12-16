@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Projects Where You are Manager</p>
+    @foreach (var project in ViewBag.ProjectsYouAreManager)
+    {
+        <p>Title: @project.Title</p>
+        <p>Manager: @project.Manager</p>
+        <a asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">See</a>
+        <br/>
+    }
+    <p>Projects Where You are Member</p>
+    @foreach (var project in ViewBag.ProjectsYouAreMember)
+    {
+        <p>Title: @project.Title</p>
+        <p>Manager: @project.Manager</p>
+        <a asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">See</a>
+        <br/>
+    }
+    <a href="/Projects/New">New project</a>
+</div>

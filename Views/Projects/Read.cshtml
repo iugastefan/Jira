@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = ViewBag.Project.Title;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <a asp-controller="Projects" asp-action="Index">All Projects</a>
+    <p>@ViewBag.Project.Title</p>
+    <a asp-controller="Projects" asp-action="AddMember" asp-route-id="@ViewBag.Project.Id">Add member</a>
+    @if (ViewBag.Project.Manager.Equals(User.Identity.Name) || User.IsInRole("Admin"))
+    {
+        <a asp-controller="Projects" asp-action="Delete" asp-route-id="@ViewBag.Project.Id">Delete project</a>
+    }
+    <p>Members:</p>
+    <ul>
+        @foreach (var member in ViewBag.Members)
+        {
+            <li>
+                <p>@member.Mail</p>
+                @if (ViewBag.Project.Manager.Equals(User.Identity.Name) || User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Projects" asp-action="RemoveMember" asp-route-id="@ViewBag.Project.Id" asp-route-mail="@member.Mail">
+                        Remove member
+                    </a>
+                }
+            </li>
+        }
+    </ul>
+    <p>Tasks:</p>
+    <ul>
+        @foreach (var task in ViewBag.Tasks)
+        {
+            <li>
+                <p>@task.Title</p>
+                <p>@task.Status</p>
+            </li>
+        }
+    </ul>
+</div>
