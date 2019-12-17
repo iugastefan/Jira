@@ -10,6 +10,13 @@
             <input class="form-control" type="text" name="Title" id="Title"/>
             <label for="Content"> Content</label><br/>
             <input class="form-control" type="text" name="Content" id="Content"/>
+            <label for="MemberName"> Member</label><br/>
+            <select class="form-control" name="MemberName" id="MemberName">
+                @foreach (var member in ViewBag.Members)
+                {
+                    <option value="@member">@member</option>
+                }
+            </select>
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>
     </form>

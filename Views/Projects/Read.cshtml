@@ -50,10 +50,15 @@
         @foreach (var task in ViewBag.Tasks)
         {
             <li class="list-group-item container">
-                <p>@task.Title</p>
-                <p>@task.Content</p>
+                <p>Owner: @task.MemberName</p>
+                <p>Title: @task.Title</p>
+                <p>Content: @task.Content</p>
+                <p>Status: @task.Status</p>
                 <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Delete" asp-route-projectId="@ViewBag.Project.Id" asp-route-taskId="@task.TaskId">
                     Remove task
+                </a>
+                <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Edit" asp-route-projectId="@ViewBag.Project.Id" asp-route-taskId="@task.TaskId">
+                   Edit task
                 </a>
             </li>
         }

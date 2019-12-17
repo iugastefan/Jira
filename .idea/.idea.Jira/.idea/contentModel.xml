@@ -28,6 +28,8 @@
       <e p="Migrations" t="Include">
         <e p="20191216081351_InitialCreate.Designer.cs" t="Include" />
         <e p="20191216081351_InitialCreate.cs" t="Include" />
+        <e p="20191217132637_Task.Designer.cs" t="Include" />
+        <e p="20191217132637_Task.cs" t="Include" />
         <e p="ApplicationDbContextModelSnapshot.cs" t="Include" />
       </e>
       <e p="Models" t="Include">
@@ -60,6 +62,7 @@
           <e p="_ValidationScriptsPartial.cshtml" t="Include" />
         </e>
         <e p="Task" t="Include">
+          <e p="Edit.cshtml" t="Include" />
           <e p="New.cshtml" t="Include" />
         </e>
         <e p="_ViewImports.cshtml" t="Include" />
@@ -69,7 +72,6 @@
       <e p="appsettings.Development.json" t="Include" />
       <e p="appsettings.json" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
-      <e p="mono_crash.mem.7076.1.blob" t="Include" />
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
           <e p="netcoreapp3.1" t="Include">
