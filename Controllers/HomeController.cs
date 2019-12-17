@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using Jira.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Jira.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,12 +8,10 @@ namespace Jira.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
+        public HomeController(UserManager<IdentityUser> userManager)
         {
-            _db = db;
             _userManager = userManager;
         }
 

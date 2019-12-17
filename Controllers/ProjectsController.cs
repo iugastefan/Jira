@@ -3,9 +3,7 @@ using System.Linq;
 using Jira.Data;
 using Jira.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Jira.Controllers
 {
@@ -15,12 +13,9 @@ namespace Jira.Controllers
         // GET
         private readonly ApplicationDbContext _db;
 
-        private readonly UserManager<IdentityUser> _userManager;
-
-        public ProjectsController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
+        public ProjectsController(ApplicationDbContext db)
         {
             _db = db;
-            _userManager = userManager;
         }
 
 
@@ -121,29 +116,29 @@ namespace Jira.Controllers
         public IActionResult RemoveMember(int id, string mail)
         {
             if (!User.IsInRole("Admin") && !_db.Projects.First(p => p.Id == id).Manager.Equals(User.Identity.Name))
-                return RedirectToAction("Read", new {id = id});
+                return RedirectToAction("Read", new {id});
             var member = _db.Members.First(m => m.Mail.Equals(mail) && m.Project.Id == id);
             _db.Members.Remove(member);
             _db.SaveChangesAsync();
-            return RedirectToAction("Read", new {id = id});
+            return RedirectToAction("Read", new {id});
         }
 
         [HttpPost]
         public IActionResult AddMember(int id, string mail)
         {
             if (_db.Members.Any(m => m.Mail.Equals(mail)))
-                return RedirectToAction("Read", new {id = id});
+                return RedirectToAction("Read", new {id});
 
             try
             {
                 var proj = _db.Projects.First(p => p.Id == id);
-                if (!proj.Manager.Equals(User.Identity.Name)) return RedirectToAction("Read", new {id = id});
+                if (!proj.Manager.Equals(User.Identity.Name)) return RedirectToAction("Read", new {id});
 
                 var member = new Member() {Mail = mail, Project = proj};
                 _db.Members.Add(member);
                 _db.SaveChangesAsync();
 
-                return RedirectToAction("Read", new {id = id});
+                return RedirectToAction("Read", new {id});
             }
             catch (Exception)
             {
