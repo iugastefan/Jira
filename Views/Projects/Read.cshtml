@@ -17,9 +17,9 @@
     <br/>
     <div class="row">
         <div class="col">
-            <h3>Members:</h3>
         </div>
         <div class="col">
+            <h3>Members:</h3>
             <ul class="list-group">
                 @foreach (var member in ViewBag.Members)
                 {
@@ -57,7 +57,7 @@
                 <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Delete" asp-route-projectId="@ViewBag.Project.Id" asp-route-taskId="@task.TaskId">
                     Remove task
                 </a>
-                <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Edit" asp-route-projectId="@ViewBag.Project.Id" asp-route-taskId="@task.TaskId">
+                <a class="btn btn-outline-info" asp-controller="Task" asp-action="Edit" asp-route-projectId="@ViewBag.Project.Id" asp-route-taskId="@task.TaskId">
                    Edit task
                 </a>
             </li>
