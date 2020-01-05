@@ -10,28 +10,34 @@
         <div class="col">
             <h3>Projects Where You are Manager</h3>
             <ul class="list-group">
-                @foreach (var project in ViewBag.ProjectsYouAreManager)
+                @if (ViewBag.ProjectsYouAreManager != null)
                 {
-                    <li class="list-group-item">
-                        <a class="stretched-link" asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">
-                            <p>Title: @project.Title</p>
-                            <p>Manager: @project.Manager</p>
-                        </a>
-                    </li>
+                    @foreach (var project in ViewBag.ProjectsYouAreManager)
+                    {
+                        <li class="list-group-item">
+                            <a class="stretched-link" asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">
+                                <p>Title: @project.Title</p>
+                                <p>Manager: @project.Manager</p>
+                            </a>
+                        </li>
+                    }
                 }
             </ul>
         </div>
         <div class="col">
             <h3>Projects Where You are Member</h3>
             <ul class="list-group">
-                @foreach (var project in ViewBag.ProjectsYouAreMember)
+                @if (ViewBag.ProjectsYouAreMember != null)
                 {
-                    <li class="list-group-item">
-                        <a class="stretched-link" asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">
-                            <p>Title: @project.Title</p>
-                            <p>Manager: @project.Manager</p>
-                        </a>
-                    </li>
+                    @foreach (var project in ViewBag.ProjectsYouAreMember)
+                    {
+                        <li class="list-group-item">
+                            <a class="stretched-link" asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">
+                                <p>Title: @project.Title</p>
+                                <p>Manager: @project.Manager</p>
+                            </a>
+                        </li>
+                    }
                 }
             </ul>
         </div>
@@ -49,14 +55,17 @@
             <div class="col">
                 <h3>All Projects</h3>
                 <ul class="list-group">
-                    @foreach (var project in ViewBag.AllProjects)
+                    @if (ViewBag.AllProjects != null)
                     {
-                        <li class="list-group-item">
-                            <a class="stretched-link" asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">
-                                <p>Title: @project.Title</p>
-                                <p>Manager: @project.Manager</p>
-                            </a>
-                        </li>
+                        @foreach (var project in ViewBag.AllProjects)
+                        {
+                            <li class="list-group-item">
+                                <a class="stretched-link" asp-controller="Projects" asp-action="Read" asp-route-id="@project.Id">
+                                    <p>Title: @project.Title</p>
+                                    <p>Manager: @project.Manager</p>
+                                </a>
+                            </li>
+                        }
                     }
                 </ul>
             </div>

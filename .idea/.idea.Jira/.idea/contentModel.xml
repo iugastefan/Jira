@@ -19,6 +19,7 @@
         <e p="HomeController.cs" t="Include" />
         <e p="ProjectsController.cs" t="Include" />
         <e p="TaskController.cs" t="Include" />
+        <e p="TeamController.cs" t="Include" />
       </e>
       <e p="Data" t="Include">
         <e p="ApplicationDbContext.cs" t="Include" />
@@ -26,10 +27,8 @@
       <e p="Jira.csproj" t="IncludeRecursive" />
       <e p="Jira.sln" t="IncludeFlat" />
       <e p="Migrations" t="Include">
-        <e p="20191216081351_InitialCreate.Designer.cs" t="Include" />
-        <e p="20191216081351_InitialCreate.cs" t="Include" />
-        <e p="20191217132637_Task.Designer.cs" t="Include" />
-        <e p="20191217132637_Task.cs" t="Include" />
+        <e p="20200105213004_init.Designer.cs" t="Include" />
+        <e p="20200105213004_init.cs" t="Include" />
         <e p="ApplicationDbContextModelSnapshot.cs" t="Include" />
       </e>
       <e p="Models" t="Include">
@@ -38,6 +37,7 @@
         <e p="Member.cs" t="Include" />
         <e p="Project.cs" t="Include" />
         <e p="Task.cs" t="Include" />
+        <e p="Team.cs" t="Include" />
       </e>
       <e p="Pages" t="Include" />
       <e p="Program.cs" t="Include" />
@@ -64,6 +64,12 @@
         <e p="Task" t="Include">
           <e p="Edit.cshtml" t="Include" />
           <e p="New.cshtml" t="Include" />
+        </e>
+        <e p="Team" t="Include">
+          <e p="AddMember.cshtml" t="Include" />
+          <e p="Edit.cshtml" t="Include" />
+          <e p="New.cshtml" t="Include" />
+          <e p="Show.cshtml" t="Include" />
         </e>
         <e p="_ViewImports.cshtml" t="Include" />
         <e p="_ViewStart.cshtml" t="Include" />

@@ -18,53 +18,58 @@ namespace Jira.Controllers
         }
 
 
-        public IActionResult New(int id)
+        public IActionResult New(int projectId, int teamId)
         {
-            var members = _db.Members.Where(m => m.Project.Id == id).Select(m => m.Mail);
+            var members = _db.Members.Where(t => t.Team.Id == teamId);
             ViewBag.Members = members;
-            ViewBag.projectId = id;
+            ViewBag.projectId = projectId;
+            ViewBag.teamId = teamId;
             return View();
         }
 
         [HttpPost]
-        public IActionResult New(Task ta, int id)
+        public IActionResult New(Task ta, int projectId, int teamId, int memberId)
         {
-            ta.Project = _db.Projects.First(p => p.Id == id);
             ta.Status = Status.NotStarted;
+            ta.Team = _db.Teams.First(t => t.Id == teamId);
+            ta.AssignedMember = _db.Members.First(m => m.Id == memberId);
             _db.Tasks.Add(ta);
             _db.SaveChangesAsync();
-            return RedirectToAction("Read", "Projects", new {id});
+            return RedirectToAction("Show", "Team", new {projectId, teamId});
         }
 
-        public IActionResult Delete(int projectId, int taskId)
+        public IActionResult Delete(int projectId, int teamId, int taskId)
         {
-            var task = _db.Tasks.First(p => p.TaskId == taskId);
+            var task = _db.Tasks.First(t => t.Id == taskId);
             _db.Tasks.Remove(task);
             _db.SaveChangesAsync();
-            return RedirectToAction("Read", "Projects", new {id = projectId});
+            return RedirectToAction("Show", "Team", new {projectId=projectId, teamId=teamId});
         }
 
-        public IActionResult Edit(int taskId, int projectId)
+        public IActionResult Edit(int projectId, int teamId, int taskId)
         {
-            var members = _db.Members.Where(m => m.Project.Id == projectId).Select(m => m.Mail);
+            var team = _db.Teams.First(t => t.Id == teamId);
+            var members = _db.Members.Where(m => m.Team.Id == teamId);
             ViewBag.Members = members;
             ViewBag.projectId = projectId;
-            ViewBag.oldTask = _db.Tasks.Find(taskId);
+            ViewBag.teamId = teamId;
+            ViewBag.oldTask = _db.Tasks.First(t => t.Id == taskId);
             ViewBag.statusList = new List<Status> {Status.Completed, Status.InProgress, Status.NotStarted};
             return View();
         }
 
         [HttpPost]
-        public IActionResult Edit(int taskId, Task ta, int projectId)
+        public IActionResult Edit(Task ta, int projectId, int teamId, int taskId, int memberId)
         {
-            var oldTask = _db.Tasks.First(t => t.TaskId == taskId);
+            // var team = _db.Projects.Find(projectId).Teams.Find(t => t.Id == teamId);
+            var oldTask = _db.Tasks.First(t => t.Id == taskId);
             oldTask.Title = ta.Title;
             oldTask.Content = ta.Content;
             oldTask.Status = ta.Status;
-            oldTask.MemberName = ta.MemberName;
+            oldTask.AssignedMember = _db.Members.First(m => m.Id == memberId);
             _db.SaveChangesAsync();
 
-            return RedirectToAction("Read", "Projects", new {id = projectId});
+            return RedirectToAction("Show", "Team", new {projectId,teamId});
         }
     }
 }

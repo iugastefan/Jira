@@ -5,13 +5,17 @@ namespace Jira.Models
 {
     public class Task
     {
-        [Key] public int TaskId { get; set; }
-        public Project Project { get; set; }
+        public Task()
+        {
+            Comments = new List<Comment>();
+        }
+        [Key] public int Id { get; set; }
+        public Team Team { get; set; }
         [Required] public string Title { get; set; }
         [Required] public string Content { get; set; }
         public Status Status { get; set; }
         public List<Comment> Comments { get; set; }
-        public string MemberName { get; set; }
+        public Member AssignedMember { get; set; }
     }
 
     public enum Status

@@ -45,29 +45,18 @@
     </div>
     <br/>
     <br/>
-    <h3>Tasks:</h3>
+    <h3>Teams:</h3>
+    <a class="btn btn-outline-info" asp-controller="Team" asp-action="New" asp-route-projectId="@ViewBag.Project.Id">
+        Add team
+    </a>
     <ul class="list-group">
-        @foreach (var task in ViewBag.Tasks)
+        @foreach (var team in ViewBag.Teams)
         {
             <li class="list-group-item container">
-                <p>Owner: @task.MemberName</p>
-                <p>Title: @task.Title</p>
-                <p>Content: @task.Content</p>
-                <p>Status: @task.Status</p>
-                <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Delete" asp-route-projectId="@ViewBag.Project.Id" asp-route-taskId="@task.TaskId">
-                    Remove task
-                </a>
-                <a class="btn btn-outline-info" asp-controller="Task" asp-action="Edit" asp-route-projectId="@ViewBag.Project.Id" asp-route-taskId="@task.TaskId">
-                   Edit task
+                <a class="stretched-link" asp-controller="Team" asp-action="Show" asp-route-teamId="@team.Id" asp-route-projectId="@ViewBag.Project.Id">
+                    Team Name: @team.Name
                 </a>
             </li>
         }
     </ul>
-    <br/>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col">
-            <a class="btn btn-primary" asp-controller="Task" asp-action="New" asp-route-id="@ViewBag.Project.Id">Add task</a>
-        </div>
-    </div>
 </div>
