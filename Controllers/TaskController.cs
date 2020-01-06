@@ -21,14 +21,25 @@ namespace Jira.Controllers
 
         public IActionResult Read(int projectId, int teamId, int taskId, bool update, int commentToUpdate)
         {
-            ViewBag.Task = _db.Tasks.First(t => t.Id == taskId);
-            ViewBag.Team = _db.Teams.First(t => t.Id == teamId);
-            ViewBag.ProjectId = projectId;
-            ViewBag.Project = _db.Projects.First(p => p.Id == projectId);
-            ViewBag.Comments = _db.Comments.Where(c => c.Task.Id == taskId).ToList();
-            ViewBag.User = _db.Members.First(m => m.Team.Id == teamId && m.Mail.Equals(User.Identity.Name));
-            ViewBag.Update = update;
-            ViewBag.CommentToUpdate = commentToUpdate;
+            // var task = _db.Tasks.First(t => t.Id == taskId);
+            try
+            {
+                var task = _db.Tasks.Where(t => t.Team.Id == teamId).Single(t => t.Id == taskId);
+                ViewBag.Task = task;
+                ViewBag.AssignedMember = task.AssignedMember?.Mail ?? "undefined";
+                ViewBag.Team = _db.Teams.First(t => t.Id == teamId);
+                ViewBag.ProjectId = projectId;
+                ViewBag.Project = _db.Projects.First(p => p.Id == projectId);
+                ViewBag.Comments = _db.Comments.Where(c => c.Task.Id == taskId).ToList();
+                ViewBag.User = _db.Members.First(m => m.Team.Id == teamId && m.Mail.Equals(User.Identity.Name));
+                ViewBag.Update = update;
+                ViewBag.CommentToUpdate = commentToUpdate;
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Show", "Team", new {projectId, teamId});
+            }
+
 
             return View();
         }
@@ -87,6 +98,11 @@ namespace Jira.Controllers
         public IActionResult Update(Task ta, int projectId, int teamId, int taskId, int memberId)
         {
             var oldTask = _db.Tasks.First(t => t.Id == taskId);
+            if (oldTask == null)
+            {
+                return RedirectToAction("Show", "Team", new {projectId, teamId});
+            }
+
             oldTask.Title = ta.Title;
             oldTask.Content = ta.Content;
             if (ta.Status != oldTask.Status)
