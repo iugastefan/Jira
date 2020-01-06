@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Add member to team";
+}
+
+<div>
+    <h1 class="">Add a member to team: @ViewBag.Team.Name</h1>
+    <form asp-controller="Team" asp-action="AddMember" method="post" asp-route-teamId="@ViewBag.Team.Id" asp-route-projectId="@ViewBag.Project.Id">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <select class="form-control" name="memberId">
+                        @foreach (var member in ViewBag.Members)
+                        {
+                            <option value="@member.Id">@member.Mail</option>
+                        }
+                    </select>
+                </div>
+                <div class="col">
+                    <input type="submit" value="Add" class="btn btn-success"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

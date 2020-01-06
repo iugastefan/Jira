@@ -1,0 +1,118 @@
+@{
+    ViewData["Title"] = ViewBag.Team.Name;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Projects" asp-action="Index">
+                            All projects
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Projects" asp-action="Read" asp-route-id="@ViewBag.Project.Id">
+                            @ViewBag.Project.Title
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">@ViewBag.Team.Name</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col">
+            <a class="btn btn-danger" asp-controller="Team" asp-action="Delete" asp-route-teamName="@ViewBag.Team.Name" asp-route-projectId="@ViewBag.ProjectId">
+                Delete team
+            </a>
+            <br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1 class="display-4">@ViewBag.Team.Name</h1>
+        </div>
+        <div class="col">
+            <h3>Team Members</h3>
+            <br/>
+            <a class="btn btn-outline-info" asp-controller="Team" asp-action="AddMember" asp-route-teamId="@ViewBag.Team.Id" asp-route-projectId="@ViewBag.ProjectId">
+                Add member
+            </a>
+            <br/>
+            <br/>
+            <br/>
+            <ul class="list-group">
+                @foreach (var member in ViewBag.Members)
+                {
+                    <li class="list-group-item">
+                        <p>Name: @member?.Mail</p>
+                        <a class="btn btn-outline-danger" asp-controller="Team" asp-action="DeleteMember" asp-route-teamId="@ViewBag.Team.Id" asp-route-memberId="@member.Id" asp-route-projectId="@ViewBag.ProjectId">
+                            Remove Member
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>Tasks</h3>
+            <a class="btn btn-outline-info" asp-controller="Task" asp-action="Create" asp-route-teamId="@ViewBag.Team.Id" asp-route-projectId="@ViewBag.ProjectId">
+                Add task
+            </a>
+            <br/>
+            <br/>
+            <ul class="list-group">
+                @foreach (var task in ViewBag.Tasks)
+                {
+                    <li class="list-group-item container">
+                        <p>Owner: @task.AssignedMember?.Mail</p>
+                        <p>Title: @task.Title</p>
+                        <p>Content: @task.Content</p>
+                        <p>Status: @task.Status</p>
+                        @if (task.StartDate != null)
+                        {
+                            <p>
+                                Start date:
+                                @task.StartDate
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                Start date: Not Started
+                            </p>
+                        }
+                        @if (task.EndDate != null)
+                        {
+                            <p>
+                                Completed date:
+                                @task.EndDate
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                Completed date: Not Completed
+                            </p>
+                        }
+                        <br/>
+                        <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Delete" asp-route-projectId="@ViewBag.ProjectId" asp-route-taskId="@task.Id" asp-route-teamId="@ViewBag.Team.Id">
+                            Remove task
+                        </a>
+                        <a class="btn btn-outline-info" asp-controller="Task" asp-action="Update" asp-route-projectId="@ViewBag.ProjectId" asp-route-taskId="@task.Id" asp-route-teamId="@ViewBag.Team.Id">
+                            Edit task
+                        </a>
+                        <a class="btn btn-outline-info" asp-controller="Task" asp-action="Read" asp-route-projectId="@ViewBag.ProjectId" asp-route-taskId="@task.Id" asp-route-teamId="@ViewBag.Team.Id">
+                            Comment
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
+</div>

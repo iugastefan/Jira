@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Edit team";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Edit task</h1>
+    <form method="post" asp-controller="Task" asp-action="Update" asp-route-projectId="@ViewBag.projectId" asp-route-taskId="@ViewBag.oldTask.TaskId">
+        <div class="form-group">
+            <label for="Title"> Title </label><br/>
+            <input class="form-control" type="text" name="Title" id="Title" value="@ViewBag.oldTask.Title"/>
+            <label for="Content"> Content</label><br/>
+            <input class="form-control" type="text" name="Content" id="Content" value="@ViewBag.oldTask.Content"/>
+            <label for="MemberName"> Member</label><br/>
+            <select class="form-control" name="MemberName" id="MemberName">
+                @foreach (var member in ViewBag.Members)
+                {
+                    <option value="@member">@member</option>
+                }
+            </select>
+            <label for="Status">Status</label><br/>
+            <select class="form-control" name="Status" id="Status">
+                @foreach (var status in ViewBag.statusList)
+                {
+                    <option value="@status">@status</option>
+                }
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</div>

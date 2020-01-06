@@ -1,0 +1,119 @@
+@{
+    ViewData["Title"] = @ViewBag.Task.Title;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Projects" asp-action="Index">
+                            All projects
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Projects" asp-action="Read" asp-route-id="@ViewBag.Project.Id">
+                            @ViewBag.Project.Title
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Team" asp-action="Show" asp-route-projectId="@ViewBag.Project.Id" asp-route-teamId="@ViewBag.Team.Id">
+                            @ViewBag.Team.Name
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">@ViewBag.Task.Title</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col">
+        </div>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Title: @ViewBag.Task.Title</p>
+            <p>Owner: @ViewBag.Task.AssignedMember?.Mail</p>
+            <p>Content: @ViewBag.Task.Content</p>
+            <p>Status: @ViewBag.Task.Status</p>
+            @if (ViewBag.Task.StartDate != null)
+            {
+                <p>
+                    Start date:
+                    @ViewBag.Task.StartDate
+                </p>
+            }
+            else
+            {
+                <p>
+                    Start date: Not Started
+                </p>
+            }
+            @if (ViewBag.Task.EndDate != null)
+            {
+                <p>
+                    Completed date:
+                    @ViewBag.Task.EndDate
+                </p>
+            }
+            else
+            {
+                <p>
+                    Completed date: Not Completed
+                </p>
+            }
+            <br/>
+            <a class="btn btn-outline-info" asp-controller="Task" asp-action="Update" asp-route-projectId="@ViewBag.ProjectId" asp-route-taskId="@ViewBag.Task.Id" asp-route-teamId="@ViewBag.Team.Id">
+                Edit task
+            </a>
+            <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Delete" asp-route-projectId="@ViewBag.ProjectId" asp-route-taskId="@ViewBag.Task.Id" asp-route-teamId="@ViewBag.Team.Id">
+                Remove task
+            </a>
+        </div>
+        <div class="col">
+            <ul class="list-group">
+                @foreach (var comment in (List<Comment>) ViewBag.Comments)
+                {
+                    @if (ViewBag.Update == true && comment.Id == ViewBag.CommentToUpdate)
+                    {
+                        <form method="post" asp-controller="Task" asp-action="UpdateComment" asp-route-projectId="@ViewBag.projectId" asp-route-teamId="@ViewBag.Team.Id" asp-route-taskId="@ViewBag.Task.Id" asp-route-commentId="@comment.Id">
+                            <div class="form-group">
+                                <label for="content">Comment</label><br/>
+                                <input class="form-control" type="text" name="content" id="content" value="@comment.Content"/>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <li class="list-group-item container">
+                            <p>Author: @comment.Author?.Mail</p>
+                            <p>Comment: @comment.Content</p>
+                            <br/>
+                            @if (comment.Author?.Mail.Equals(User.Identity.Name)??false)
+                            {
+                                <a class="btn btn-outline-danger" asp-controller="Task" asp-action="DeleteComment" asp-route-projectId="@ViewBag.ProjectId" asp-route-taskId="@ViewBag.Task.Id" asp-route-teamId="@ViewBag.Team.Id" asp-route-commentId="@comment.Id">
+                                    Delete comment
+                                </a>
+                                <a class="btn btn-outline-info" asp-controller="Task" asp-action="UpdateComment" asp-route-projectId="@ViewBag.ProjectId" asp-route-taskId="@ViewBag.Task.Id" asp-route-teamId="@ViewBag.Team.Id" asp-route-commentToUpdate="@comment.Id">
+                                    Edit comment
+                                </a>
+                            }
+                        </li>
+                    }
+                }
+            </ul>
+            <form method="post" asp-controller="Task" asp-action="AddComment" asp-route-projectId="@ViewBag.projectId" asp-route-teamId="@ViewBag.Team.Id" asp-route-taskId="@ViewBag.Task.Id">
+                <div class="form-group">
+                    <label for="content">Comment</label><br/>
+                    <input class="form-control" type="text" name="content" id="content"/>
+                </div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+
+        </div>
+    </div>
+</div>

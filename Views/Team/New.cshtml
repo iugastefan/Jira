@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Create a team";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Create a team</h1>
+    <form method="post" asp-controller="Team" asp-action="New" asp-route-projectId="@ViewBag.projectId">
+        <div class="form-group">
+            <label for="Name"> Team Name </label><br/>
+            <input class="form-control" type="text" name="Name" id="Name"/>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</div>
