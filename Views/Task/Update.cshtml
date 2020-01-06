@@ -4,7 +4,7 @@
 
 <div class="text-center">
     <h1 class="display-4">Edit task</h1>
-    <form method="post" asp-controller="Task" asp-action="Edit" asp-route-projectId="@ViewBag.projectId" asp-route-taskId="@ViewBag.oldTask.Id" asp-route-teamId="@ViewBag.teamId">
+    <form method="post" asp-controller="Task" asp-action="Update" asp-route-projectId="@ViewBag.projectId" asp-route-taskId="@ViewBag.oldTask.Id" asp-route-teamId="@ViewBag.teamId">
         <div class="form-group">
             <label for="Title"> Title </label><br/>
             <input class="form-control" type="text" name="Title" id="Title" value="@ViewBag.oldTask.Title"/>

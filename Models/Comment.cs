@@ -8,7 +8,7 @@ namespace Jira.Models
     {
         [Key] public int Id { get; set; }
         [Required] public Task Task { get; set; }
-        [Required] public string Creator { get; set; }
+        [Required] public Member Author { get; set; }
         [Required] public string Content { get; set; }
     }
 }

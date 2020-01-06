@@ -16,5 +16,6 @@ namespace Jira.Data
         public DbSet<Member> Members { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }

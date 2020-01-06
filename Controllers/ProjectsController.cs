@@ -69,8 +69,21 @@ namespace Jira.Controllers
                 var proj = _db.Projects.Single(p => p.Id == id);
                 if (!proj.Manager.Equals(User.Identity.Name) && !User.IsInRole("Admin"))
                     return RedirectToAction("Index");
-                _db.Projects.Where(p => p.Id == id).SelectMany(p => p.Members).ToList().Clear();
-                _db.Projects.Where(p => p.Id == id).SelectMany(p => p.Teams).ToList().Clear();
+                foreach (var team in _db.Teams.Where(t => t.Project.Id == id))
+                {
+                    foreach (var task in _db.Tasks.Where(t => t.Team == team))
+                    {
+                        _db.Tasks.Remove(task);
+                    }
+
+                    _db.Teams.Remove(team);
+                }
+
+                foreach (var member in _db.Members.Where(m => m.Project.Id == id))
+                {
+                    _db.Members.Remove(member);
+                }
+
                 _db.Projects.Remove(proj);
                 _db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -100,28 +113,19 @@ namespace Jira.Controllers
         public IActionResult AddMember(int id)
         {
             var members = from users in _db.Users select users.Email;
-            ViewBag.Members = members;
+            var membersInProject = _db.Members.Where(m => m.Project.Id == id).Select(m => m.Mail);
+            ViewBag.Members = members.Except(membersInProject);
             ViewBag.Id = id;
             ViewBag.ProjectName = _db.Projects.First(p => p.Id == id).Title;
             return View();
         }
 
 
-        public IActionResult RemoveMember(int id, string mail)
-        {
-            if (!User.IsInRole("Admin") && !_db.Projects.First(p => p.Id == id).Manager.Equals(User.Identity.Name))
-                return RedirectToAction("Read", new {id});
-            var member = _db.Projects.Where(p => p.Id == id).SelectMany(p => p.Members).First(m => m.Mail.Equals(mail));
-            _db.Projects.Find(id).Members.Remove(member);
-            _db.SaveChangesAsync();
-            return RedirectToAction("Read", new {id});
-        }
-
         [HttpPost]
         public IActionResult AddMember(int id, string mail)
         {
             var project = _db.Projects.Find(id);
-            if (project.Members.Any(m => m.Mail.Equals(mail)))
+            if (_db.Members.Any(m => m.Project.Id == id && m.Mail.Equals(mail)))
                 return RedirectToAction("Read", new {id});
 
             try
@@ -138,6 +142,27 @@ namespace Jira.Controllers
             {
                 return RedirectToAction("Index");
             }
+        }
+
+        public IActionResult RemoveMember(int id, string mail)
+        {
+            if (!User.IsInRole("Admin") && !_db.Projects.First(p => p.Id == id).Manager.Equals(User.Identity.Name))
+                return RedirectToAction("Read", new {id});
+            var member = _db.Projects.Where(p => p.Id == id).SelectMany(p => p.Members).First(m => m.Mail.Equals(mail));
+            _db.Projects.Find(id).Members.Remove(member);
+            foreach (var team in _db.Projects.Where(p => p.Id == id).SelectMany(p => p.Teams))
+            {
+                try
+                {
+                    team.Members.Remove(team.Members.First(m => m.Mail.Equals(mail)));
+                }
+                catch (Exception)
+                {
+                }
+            }
+
+            _db.SaveChangesAsync();
+            return RedirectToAction("Read", new {id});
         }
     }
 }
