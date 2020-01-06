@@ -79,10 +79,6 @@
       <e p="appsettings.Development.json" t="Include" />
       <e p="appsettings.json" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
-      <e p="mono_crash.mem.114375.1.blob" t="Include" />
-      <e p="mono_crash.mem.137777.1.blob" t="Include" />
-      <e p="mono_crash.mem.138480.1.blob" t="Include" />
-      <e p="mono_crash.mem.154854.1.blob" t="Include" />
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
           <e p="netcoreapp3.1" t="Include">
