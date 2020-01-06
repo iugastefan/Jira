@@ -15,8 +15,35 @@
         </div>
     </div>
     <br/>
+    <br/>
+    <br/>
+    <br/>
     <div class="row">
         <div class="col">
+            <a class="btn btn-info" asp-controller="Team" asp-action="New" asp-route-projectId="@ViewBag.Project.Id">
+                Add team
+            </a>
+        </div>
+        <div class="col">
+            <a class="btn btn-primary" asp-controller="Projects" asp-action="AddMember" asp-route-id="@ViewBag.Project.Id">
+                Add member
+            </a>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col">
+            <h3>Teams:</h3>
+            <ul class="list-group">
+                @foreach (var team in ViewBag.Teams)
+                {
+                    <li class="list-group-item container">
+                        <a class="stretched-link" asp-controller="Team" asp-action="Show" asp-route-teamId="@team.Id" asp-route-projectId="@ViewBag.Project.Id">
+                            Team Name: @team.Name 
+                        </a>
+                    </li>
+                }
+            </ul>
         </div>
         <div class="col">
             <h3>Members:</h3>
@@ -36,27 +63,4 @@
             </ul>
         </div>
     </div>
-    <br/>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col">
-            <a class="btn btn-primary" asp-controller="Projects" asp-action="AddMember" asp-route-id="@ViewBag.Project.Id">Add member</a>
-        </div>
-    </div>
-    <br/>
-    <br/>
-    <h3>Teams:</h3>
-    <a class="btn btn-outline-info" asp-controller="Team" asp-action="New" asp-route-projectId="@ViewBag.Project.Id">
-        Add team
-    </a>
-    <ul class="list-group">
-        @foreach (var team in ViewBag.Teams)
-        {
-            <li class="list-group-item container">
-                <a class="stretched-link" asp-controller="Team" asp-action="Show" asp-route-teamId="@team.Id" asp-route-projectId="@ViewBag.Project.Id">
-                    Team Name: @team.Name
-                </a>
-            </li>
-        }
-    </ul>
 </div>

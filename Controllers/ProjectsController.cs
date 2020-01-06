@@ -27,10 +27,10 @@ namespace Jira.Controllers
             }
 
             var projectsYouAreMember =
-                _db.Projects.AsEnumerable().Where(p => p.Members.Exists(m => m.Mail.Equals(User.Identity.Name)));
+                _db.Projects.Where(p => p.Members.Any(m => m.Mail.Equals(User.Identity.Name)));
 
             var projectsYouAreManager =
-                _db.Projects.AsEnumerable().Where(proj => proj.Manager.Equals(User.Identity.Name));
+                _db.Projects.Where(proj => proj.Manager.Equals(User.Identity.Name));
 
             ViewBag.ProjectsYouAreMember = projectsYouAreMember;
             ViewBag.ProjectsYouAreManager = projectsYouAreManager;
@@ -98,7 +98,7 @@ namespace Jira.Controllers
         {
             var project = _db.Projects.First(p => p.Id == id);
 
-            var member = project.Members.Any(m => m.Mail.Equals(User.Identity.Name));
+            var member = _db.Members.Any(m => m.Mail.Equals(User.Identity.Name)&&m.Project.Id == id);
 
             if (!User.IsInRole("Admin") && !member && !project.Manager.Equals(User.Identity.Name))
                 return RedirectToAction("Index");
@@ -158,6 +158,7 @@ namespace Jira.Controllers
                 }
                 catch (Exception)
                 {
+                    // ignored
                 }
             }
 

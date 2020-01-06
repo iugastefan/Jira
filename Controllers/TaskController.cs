@@ -21,20 +21,14 @@ namespace Jira.Controllers
 
         public IActionResult Read(int projectId, int teamId, int taskId, bool update, int commentToUpdate)
         {
-            try
-            {
-                ViewBag.Task = _db.Tasks.First(t => t.Id == taskId);
-                ViewBag.Team = _db.Teams.First(t => t.Id == teamId);
-                ViewBag.ProjectId = projectId;
-                ViewBag.Project = _db.Projects.First(p => p.Id == projectId);
-                ViewBag.Comments = _db.Comments.Where(c => c.Task.Id == taskId).ToList();
-                ViewBag.User = _db.Members.First(m => m.Team.Id == teamId && m.Mail.Equals(User.Identity.Name));
-                ViewBag.Update = update;
-                ViewBag.CommentToUpdate = commentToUpdate;
-            }
-            catch (Exception)
-            {
-            }
+            ViewBag.Task = _db.Tasks.First(t => t.Id == taskId);
+            ViewBag.Team = _db.Teams.First(t => t.Id == teamId);
+            ViewBag.ProjectId = projectId;
+            ViewBag.Project = _db.Projects.First(p => p.Id == projectId);
+            ViewBag.Comments = _db.Comments.Where(c => c.Task.Id == taskId).ToList();
+            ViewBag.User = _db.Members.First(m => m.Team.Id == teamId && m.Mail.Equals(User.Identity.Name));
+            ViewBag.Update = update;
+            ViewBag.CommentToUpdate = commentToUpdate;
 
             return View();
         }
@@ -53,10 +47,14 @@ namespace Jira.Controllers
         {
             try
             {
-                ta.Status = Status.NotStarted;
-                ta.Team = _db.Teams.First(t => t.Id == teamId);
-                ta.AssignedMember = _db.Members.First(m => m.Id == memberId);
-                _db.Tasks.Add(ta);
+                var team = _db.Teams.First(t => t.Id == teamId);
+                var assignedMember = _db.Members.First(m => m.Id == memberId);
+                var task = new Task
+                {
+                    Content = ta.Content, Title = ta.Title, Status = Status.NotStarted, Team = team,
+                    AssignedMember = assignedMember
+                };
+                _db.Tasks.Add(task);
                 _db.SaveChangesAsync();
             }
             catch (Exception)
@@ -76,7 +74,6 @@ namespace Jira.Controllers
 
         public IActionResult Update(int projectId, int teamId, int taskId)
         {
-            var team = _db.Teams.First(t => t.Id == teamId);
             var members = _db.Members.Where(m => m.Team.Id == teamId);
             ViewBag.Members = members;
             ViewBag.projectId = projectId;
@@ -89,12 +86,32 @@ namespace Jira.Controllers
         [HttpPost]
         public IActionResult Update(Task ta, int projectId, int teamId, int taskId, int memberId)
         {
-            // var team = _db.Projects.Find(projectId).Teams.Find(t => t.Id == teamId);
             var oldTask = _db.Tasks.First(t => t.Id == taskId);
             oldTask.Title = ta.Title;
             oldTask.Content = ta.Content;
-            oldTask.Status = ta.Status;
-            oldTask.AssignedMember = _db.Members.First(m => m.Id == memberId);
+            if (ta.Status != oldTask.Status)
+            {
+                switch (ta.Status)
+                {
+                    case Status.Completed:
+                        oldTask.EndDate = DateTime.Now;
+                        oldTask.StartDate = DateTime.Now;
+                        break;
+                    case Status.InProgress:
+                        oldTask.StartDate = DateTime.Now;
+                        oldTask.EndDate = null;
+                        break;
+                    case Status.NotStarted:
+                        oldTask.StartDate = null;
+                        oldTask.EndDate = null;
+                        break;
+                }
+
+                oldTask.Status = ta.Status;
+            }
+
+            var member = _db.Members.First(m => m.Id == memberId);
+            oldTask.AssignedMember = member ?? oldTask.AssignedMember;
             _db.SaveChangesAsync();
 
             return RedirectToAction("Show", "Team", new {projectId, teamId});
